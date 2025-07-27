@@ -2,14 +2,25 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const payButton = document.getElementById("pay-button");
-    // Ambil bookingId dari URL (misalnya dari window.location.pathname)
+    const checkStatusButton = document.getElementById("check-status-button");
     const urlParts = window.location.pathname.split("/");
-    const bookingId = urlParts[urlParts.length - 1]; // Mengambil ID dari URL /booking/success/{id}
+    const bookingId = urlParts[urlParts.length - 1];
 
+    // Logika untuk tombol "Lanjutkan Pembayaran" (Midtrans Snap)
     if (payButton && bookingId) {
         payButton.onclick = function () {
-            fetch(`/api/payment/snap-token/${bookingId}?type=initial_payment`) // Panggil API endpoint yang baru
-                .then((response) => response.json())
+            // CHANGE THIS: back to /api/...
+            fetch(`/api/payment/snap-token/${bookingId}?type=initial_payment`)
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.text().then((text) => {
+                            throw new Error(
+                                `HTTP error! status: ${response.status}, response: ${text}`
+                            );
+                        });
+                    }
+                    return response.json();
+                })
                 .then((data) => {
                     if (data.snap_token) {
                         if (window.snap) {
@@ -54,13 +65,55 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
 
-    // Untuk tombol "Bayar Sisa Pembayaran" di user.bookings.show (juga pakai Success.js)
+    // Logika untuk tombol "Cek Status Pembayaran (Manual)"
+    if (checkStatusButton && bookingId) {
+        checkStatusButton.onclick = function () {
+            // CHANGE THIS: back to /api/...
+            fetch(`/api/payment/status/${bookingId}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.text().then((text) => {
+                            throw new Error(
+                                `HTTP error! status: ${response.status}, response: ${text}`
+                            );
+                        });
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.status) {
+                        alert(
+                            `Status Transaksi Midtrans: ${data.status}\nStatus Booking Anda: ${data.booking_status}`
+                        );
+                        window.location.reload();
+                    } else {
+                        alert("Gagal mendapatkan status transaksi.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error checking transaction status:", error);
+                    alert(
+                        "Terjadi kesalahan saat mengecek status. Silakan coba lagi."
+                    );
+                });
+        };
+    }
+
     const payRemainingButton = document.getElementById("pay-remaining-button");
     if (payRemainingButton && bookingId) {
-        // bookingId tetap diambil dari URL
         payRemainingButton.onclick = function () {
-            fetch(`/api/payment/snap-token/${bookingId}?type=remaining_payment`) // Panggil API endpoint yang baru dengan type
-                .then((response) => response.json())
+            // CHANGE THIS: back to /api/...
+            fetch(`/api/payment/snap-token/${bookingId}?type=remaining_payment`)
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.text().then((text) => {
+                            throw new Error(
+                                `HTTP error! status: ${response.status}, response: ${text}`
+                            );
+                        });
+                    }
+                    return response.json();
+                })
                 .then((data) => {
                     if (data.snap_token) {
                         if (window.snap) {

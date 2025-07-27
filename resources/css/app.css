@@ -1,3 +1,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.fc-day-disabled {
+    cursor: not-allowed !important;
+    background-color: #f0f0f0 !important; /* Tailwind gray-100 */
+    opacity: 0.7;
+}
+
+.fc-day-selected {
+    background-color: #bfdbfe !important; /* Tailwind blue-200 */
+    border: 2px solid #3b82f6 !important; /* Tailwind blue-500 */
+    border-radius: 0.25rem; /* Tailwind rounded-md */
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* Optional: blue ring focus effect */
+}
+
+/* Optional: Membuat tanggal yang tidak aktif juga tidak bisa dihover */
+.fc-day-disabled:hover {
+    background-color: #f0f0f0 !important;
+}
+
+/* Optional: Mengatur ulang warna hover default FullCalendar untuk yang dipilih */
+.fc-day-selected:hover {
+    background-color: #93c5fd !important; /* Tailwind blue-300 */
+}
+
+/* --- PERUBAHAN BARU UNTUK UKURAN TULISAN KALENDER --- */
+
+/* Judul header (misal "July 2025") */
+.fc .fc-toolbar-title {
+    font-size: 1rem !important; /* Default biasanya 1.25rem atau 1.5rem, ubah ke 1rem (16px) */
+}
+
+/* Nama hari (misal "Sun", "Mon") */
+.fc .fc-col-header-cell-cushion {
+    font-size: 0.75rem !important; /* text-xs (12px) */
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+}
+
+/* Angka tanggal di sel kalender */
+.fc .fc-daygrid-day-number {
+    font-size: 0.7rem !important; /* Sedikit lebih kecil dari text-xs */
+    opacity: 0.8; /* Sedikit lebih redup */
+    padding: 0.05rem !important; /* Kurangi padding */
+}
+
+/* Tombol navigasi di header (prev, next, today) */
+.fc .fc-button {
+    font-size: 0.75rem !important; /* text-xs */
+    padding: 0.25rem 0.5rem !important; /* Kurangi padding tombol */
+}
+
+/* Tampilan 'dayGridWeek'/'dayGridMonth' di header */
+.fc .fc-button-group .fc-button {
+    font-size: 0.75rem !important; /* text-xs */
+}

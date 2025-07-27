@@ -27,7 +27,6 @@
 <body class="font-sans antialiased h-full">
     <div class="min-h-screen bg-pink-100 flex flex-col">
 
-        {{-- Ini adalah tempat untuk navigasi yang akan di-yield dari child view --}}
         @yield('navigation')
 
         <main class="flex-grow">

@@ -3,7 +3,7 @@
 @section('title', 'Dashboard Pengguna')
 
 @section('navigation')
-    @include('layouts.navigation-auth')
+    @include('layouts.navigation')
 @endsection
 
 @section('content')

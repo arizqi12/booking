@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Pesan MC: ' . $mc->user->name)
+@section('title', 'Pemesana: ' . $mc->user->name)
 
 @section('navigation')
     {{-- Ini adalah navigasi untuk pengguna yang sudah login (user, admin, editor) --}}
@@ -49,9 +49,8 @@
                         </div>
                     @endif
 
-                    {{-- Alpine.js component serviceOptions() diimpor via JS, jadi x-data cukup memanggilnya --}}
                     <div x-data="serviceOptions()" class="space-y-4 mb-8">
-                        <h3 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">Pilih Jenis Layanan MC</h3>
+                        <h3 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">Pilih Jenis Layanan</h3>
                         <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
                             <template x-for="(service, index) in services" :key="index">
                                 <label

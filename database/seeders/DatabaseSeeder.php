@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RolesAndAdminSeeder::class);
+        $this->call(McServicesSeeder::class);
 
         User::factory()->create([
             'name' => 'Test User',

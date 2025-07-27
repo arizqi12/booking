@@ -2,15 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\McController; // Tambahkan ini
 use App\Http\Controllers\BookingController; // Tambahkan ini
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\McScheduleController; // Tambahkan ini
 
 // Rute bawaan Laravel Breeze
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -22,13 +22,21 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-// --- Rute Baru Untuk Aplikasi Booking MC ---
 
-// Rute untuk Halaman Publik MC (Detail & Booking)
 Route::get('/mc/{id}', [McController::class, 'show'])->name('mc.show');
 Route::post('/mc/{id}/book', [BookingController::class, 'store'])->name('booking.store')->middleware('auth'); // Hanya user terautentikasi bisa booking
 
-// Rute untuk Dashboard User (Pemesan)
+Route::get('/booking/success/{id}', [BookingController::class, 'success'])->name('user.bookings.success'); // <--- TAMBAHKAN BARIS INI
+
+    Route::get('/my-bookings', [BookingController::class, 'index'])->name('my.bookings.index');
+    Route::get('/my-bookings/{id}', [BookingController::class, 'show'])->name('my.bookings.show');
+
+    Route::get('/payment/snap-token/{booking}', [PaymentController::class, 'getSnapToken'])->middleware('auth')->name('api.snap-token');
+
+// API untuk Midtrans Notification (Webhook) - ini harus bisa diakses publik oleh Midtrans
+Route::post('/midtrans/notification', [PaymentController::class, 'handleNotification'])->name('midtrans.notification');
+
+
 Route::middleware(['auth', 'role:user'])->group(function () { // Middleware role akan kita buat nanti
     Route::get('/my-bookings', [BookingController::class, 'index'])->name('my.bookings.index');
     Route::get('/my-bookings/{id}', [BookingController::class, 'show'])->name('my.bookings.show');

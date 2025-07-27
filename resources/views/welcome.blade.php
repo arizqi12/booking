@@ -1,11 +1,7 @@
-{{-- resources/views/welcome.blade.php --}}
-
 @extends('layouts.app')
-
 @section('title', 'Beranda - Booking MC')
 
 @section('navigation')
-    {{-- Memanggil navbar floating --}}
     @include('layouts.home.navbar')
 @endsection
 
@@ -26,14 +22,10 @@
         </div>
     </div>
 
-
-
-
-
     <section id="pricing" class="flex items-center justify-center mt-10 pb-10">
         <div class="p-4 sm:px-10 flex flex-col justify-center items-center text-base w-full mx-auto">
             <div id="profil-mc" class="container mx-auto px-4 py-16">
-                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Kenali MC Kami</h2>
+                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Profile</h2>
                 <div class="p-4 max-w-6xl mx-auto text-center">
                     @if ($mc = \App\Models\Mc::with('user')->first())
                         <img src="{{ $mc->profile_picture_url ?: 'https://via.placeholder.com/150' }}"
@@ -44,30 +36,32 @@
                         <p class="text-lg text-gray-600 mb-4">{{ $mc->bio }}</p>
                         <a href="{{ route('mc.show', ['id' => $mc->id]) }}"
                             class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full inline-block transition duration-300">
-                            Lihat Profil Lengkap & Booking
+                            My Portofolio
                         </a>
                     @else
                         <p class="text-gray-600">Profil MC belum tersedia.</p>
                     @endif
                 </div>
             </div>
-            <h3 class="text-4xl font-semibold text-center flex gap-2 justify-center mb-10 text-gray-800">Pilihan Paket
-                Layanan</h3>
+            <h3 class="text-4xl font-semibold text-center flex gap-2 justify-center mb-10 text-gray-800">Package</h3>
             <div class="isolate mx-auto grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-2">
 
                 {{-- Card Standard --}}
-                <div class="ring-1 ring-gray-200 rounded-3xl p-8 xl:p-10 bg-white">
+                <div class="ring-1 ring-gray-200 rounded-3xl p-6 xl:p-8 bg-white">
                     <div class="flex items-center justify-between gap-x-4">
-                        <h3 id="tier-standard" class="text-gray-900 text-2xl font-semibold leading-8">Standard</h3>
+                        <h3 id="tier-standard" class="text-gray-900 text-2xl font-semibold leading-8">Standart</h3>
                     </div>
-                    <p class="mt-4 text-base leading-6 text-gray-600">Harga mulai dari</p>
-                    <p class="mt-6 flex flex-col justify-between items-center gap-x-1">
-                        <span class="line-through text-lg font-sans text-gray-500/70">Rp800.000</span>
-                        <span class="text-3xl font-bold tracking-tight text-gray-900">Rp650.000</span>
+                    <p class="mt-4 text-base leading-6 text-gray-600">Cocok untuk acara individual</p>
+                    <p class="mt-6 flex items-end gap-x-1 mx-auto">
+                        <span class="text-3xl font-bold tracking-tight text-gray-900">
+                            Rp{{ number_format($minStandardPrice, 0, ',', '.') }}</span>
+                        <span class="line-through text-lg font-sans text-red-500/70">
+                            Rp{{ number_format($strikeStandardPrice, 0, ',', '.') }}</span>
                     </p>
-                    <a href="{{ route('mc.show', ['id' => $mc ? $mc->id : 1]) }}" aria-describedby="tier-standard"
+                    <a href="{{ route('mc.show', ['id' => $mc ? $mc->id : 1, 'package' => 'standard']) }}"
+                        aria-describedby="tier-standard"
                         class="text-blue-600 ring-1 ring-inset ring-blue-200 hover:ring-blue-300 mt-6 block rounded-md py-2 px-3 text-center text-base font-medium leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                        target="_blank">Pesan Paket Ini</a>
+                        target="_blank">Pilih Paket Standar</a>
                     <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
                         <li class="flex gap-x-3 text-base items-start">
                             <i class="fas fa-angle-right h-6 w-5 flex-none text-blue-600 mt-0.5"></i> Lamaran
@@ -86,27 +80,30 @@
                 </div>
 
                 {{-- Card Exclusive --}}
-                <div class="ring-2 ring-blue-600 rounded-3xl p-8 xl:p-10 bg-white">
+                <div class="ring-2 ring-blue-600 rounded-3xl p-6 xl:p-8 bg-white">
                     <div class="flex items-center justify-between gap-x-4">
-                        <h3 id="tier-exclusive" class="text-blue-600 text-2xl font-semibold leading-8">Exclusive</h3>
+                        <h3 id="tier-exclusive" class="text-blue-600 text-2xl font-bold leading-8">Exclusive</h3>
                         <p class="rounded-full bg-blue-600/10 px-2.5 py-1 text-xs font-semibold leading-5 text-blue-600">
                             Paling Populer
                         </p>
                     </div>
-                    <p class="mt-4 text-base leading-6 text-gray-600">Harga Mulai dari</p>
-                    <p class="mt-6 flex flex-col items-center gap-x-1">
-                        <span class="line-through text-lg font-sans text-gray-500/70">Rp2.250.000</span>
-                        <span class="text-3xl font-bold tracking-tight text-gray-900">Rp1.000.000</span>
+                    <p class="mt-4 text-base leading-6 text-gray-600">Solusi lengkap untuk acara besar</p>
+                    <p class="mt-6 flex items-end gap-x-1 mx-auto">
+                        <span class="text-3xl font-bold tracking-tight text-gray-900">
+                            Rp{{ number_format($minExclusivePrice, 0, ',', '.') }}</span>
+                        <span class="line-through text-lg font-sans text-red-500/70">
+                            Rp{{ number_format($strikeExclusivePrice, 0, ',', '.') }}</span>
                     </p>
-                    <a href="{{ route('mc.show', ['id' => $mc ? $mc->id : 1]) }}" aria-describedby="tier-exclusive"
+                    <a href="{{ route('mc.show', ['id' => $mc ? $mc->id : 1, 'package' => 'exclusive']) }}"
+                        aria-describedby="tier-exclusive"
                         class="bg-blue-600 text-white shadow-sm hover:bg-blue-500 mt-6 block rounded-md py-2 px-3 text-center text-base font-medium leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                        target="_blank">Pesan Paket Ini</a>
+                        target="_blank">Pilih Paket Eksklusif</a>
                     <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
                         <li class="flex gap-x-3 text-base items-start">
-                            <i class="fas fa-angle-right h-6 w-5 flex-none text-blue-600 mt-0.5"></i> Lamaran, Akad Nikah
+                            <i class="fas fa-angle-right h-6 w-5 flex-none text-blue-600 mt-0.5"></i> Paket Akad & Resepsi
                         </li>
                         <li class="flex gap-x-3 text-base items-start">
-                            <i class="fas fa-angle-right h-6 w-5 flex-none text-blue-600 mt-0.5"></i> Lamaran, Akad Nikah,
+                            <i class="fas fa-angle-right h-6 w-5 flex-none text-blue-600 mt-0.5"></i> Paket Lamaran, Akad &
                             Resepsi
                         </li>
                     </ul>

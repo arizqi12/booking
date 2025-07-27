@@ -1,11 +1,12 @@
 import "./bootstrap";
 
 import Alpine from "alpinejs";
-import { Calendar } from "@fullcalendar/core";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+
+import { serviceOptions } from "./pages/mc/ServiceOption";
 
 window.Alpine = Alpine;
+
+window.serviceOptions = serviceOptions;
 
 Alpine.start();
 
